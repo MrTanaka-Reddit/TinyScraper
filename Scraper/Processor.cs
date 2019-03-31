@@ -38,7 +38,7 @@ namespace Scraper
             {
                 if (anchor.Attributes["href"] != null)
                 {
-                    Uri uri;
+                    Uri uri = default(Uri);
 
                     // Add any Urls that should be ignored here.
                     // E.g. One web server included a link back to the root site on each page.
@@ -54,8 +54,13 @@ namespace Scraper
                     }
                     else
                     {
-                        // If the Url is relative, then manually create an absolute Url
-                        Uri.TryCreate(String.Concat(baseUrl, value), UriKind.Absolute, out uri);
+                        // Check that the relative Url is not pointing back to an upper level.
+                        // If it is, we don't want it.
+                        if (!value.StartsWith("/"))
+                        {
+                            // If the Url is relative, then manually create an absolute Url
+                            Uri.TryCreate(String.Concat(baseUrl, value), UriKind.Absolute, out uri);
+                        }                        
                     }
 
                     // Don't add urls with queries, because that can lead to

@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("A small online directory scraper")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("MrTanaka from Reddit")]
-[assembly: AssemblyProduct("Scraper")]
+[assembly: AssemblyProduct("Tiny Scraper")]
 [assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

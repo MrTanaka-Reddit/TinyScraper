@@ -47,8 +47,10 @@ namespace Scraper
             _fileList.Clear();
             gridResults.Refresh();
 
-            var url = tbUrl.Text;
-            if (url == "") return;
+            tbUrl.Text = Processor.EnsureSlash(tbUrl.Text);
+
+            var userUrl = tbUrl.Text;
+            if (userUrl == "") return;
 
             lblStatus.Text = Constants.SCRAPING_STARTED;
             var scrapeStart = DateTime.Now;
@@ -59,22 +61,22 @@ namespace Scraper
             // Each List<string> collection in the parent collection contains the folders found at a given depth in the folder heirarchy.
             var folderUrls = new List<List<string>>();
 
-            lblStatus.Text = Constants.PROCESSING_PREFIX + url;
+            lblStatus.Text = Constants.PROCESSING_PREFIX + userUrl;
 
             // Process Urls in the root document.
             var downloader = new Downloader();
-            var document = await downloader.GetDocument(url);
+            var document = await downloader.GetDocument(userUrl);
 
             // If no content is downloaded, just quit here.
             if (document == null) return;
 
-            var urls = Processor.GetUrls(document, url);
+            var urls = Processor.GetUrls(document, userUrl);
             
             // Get a list of all the Urls that point to files
             var files = Processor.GetFileUrls(urls);
 
             // Get a list of all the Urls that point to folders
-            var downstreamFolders = Processor.GetOnlyDownstreamFolders(urls, url);
+            var downstreamFolders = Processor.GetOnlyDownstreamFolders(urls, userUrl);
 
             // Add any folder Urls found in the root document to the collection.
             folderUrls.Add(downstreamFolders);

@@ -244,42 +244,6 @@ namespace Scraper
             }
         }
 
-        #endregion
-
-        #region == EVENTS: GRID ==
-        private void btnSelectAll_Click(object sender, EventArgs e)
-        {
-            if (gridResults.Rows.Count > 0)
-            {
-                for (int i = 0; i < gridResults.Rows.Count; i++)
-                {
-                    gridResults.Rows[i].Cells[0].Value = true;
-                }
-            }
-        }
-
-        private void btnSelectNone_Click(object sender, EventArgs e)
-        {
-            if (gridResults.Rows.Count > 0)
-            {
-                for (int i = 0; i < gridResults.Rows.Count; i++)
-                {
-                    gridResults.Rows[i].Cells[0].Value = false;
-                }
-            }
-        }
-
-        private void btnInverse_Click(object sender, EventArgs e)
-        {
-            if (gridResults.Rows.Count > 0)
-            {
-                for (int i = 0; i < gridResults.Rows.Count; i++)
-                {
-                    gridResults.Rows[i].Cells[0].Value = !(bool)(gridResults.Rows[i].Cells[0].Value);
-                }
-            }
-        }
-
         private void btnDuplicates_Click(object sender, EventArgs e)
         {
             List<string> filteredList = new List<string>();
@@ -295,6 +259,12 @@ namespace Scraper
             _filteredList = filteredList;
             DisplayResults(_filteredList);
         }
+
+
+        #endregion
+
+        #region == EVENTS: GRID ==
+
 
         private void gridResults_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
@@ -327,6 +297,54 @@ namespace Scraper
 
         #endregion
 
+
+        #region == EVENTS: SELECTORS ==
+
+        /// <summary>
+        /// Checks all results in the grid or tree
+        /// </summary>
+        private void btnSelectAll_Click(object sender, EventArgs e)
+        {
+            if (rbShowGrid.Checked)
+            {
+                SelectAllGridRows(true);
+            }
+            else
+            {
+                CheckAllTreeNodes(true);
+            }
+        }
+
+        /// <summary>
+        /// Unchecks all the results in the grid or tree
+        /// </summary>
+        private void btnSelectNone_Click(object sender, EventArgs e)
+        {
+            if (rbShowGrid.Checked)
+            {
+                SelectAllGridRows(false);
+            } else
+            {
+                CheckAllTreeNodes(false);
+            }
+        }
+
+
+        private void btnInverse_Click(object sender, EventArgs e)
+        {
+            if (rbShowGrid.Checked)
+            {
+                InvertCheckedGridItems();
+            }  
+            else
+            {
+                InvertCheckedTreeNodes(tvResults.TopNode);
+            }
+        }
+
+        #endregion
+
+        
         #region == EVENTS: TREEVIEW ==
 
         /// <summary>
@@ -730,6 +748,54 @@ namespace Scraper
             }
         }
 
+        /// <summary>
+        /// Checks/unchecks all the rows in a grid.
+        /// </summary>
+        /// <param name="outcome">True to check; false to uncheck</param>
+        private void SelectAllGridRows(bool outcome)
+        {
+            if (gridResults.Rows.Count > 0)
+            {
+                for (int i = 0; i < gridResults.Rows.Count; i++)
+                {
+                    gridResults.Rows[i].Cells[0].Value = outcome;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Checks all the nodes in a Treeview
+        /// </summary>
+        /// <param name="outome">True to check; false to uncheck</param>
+        private void CheckAllTreeNodes(bool outcome)
+        {
+            CheckAllChildNodes(tvResults.TopNode, outcome);
+        }
+
+
+        private void InvertCheckedGridItems()
+        {
+            if (gridResults.Rows.Count > 0)
+            {
+                for (int i = 0; i < gridResults.Rows.Count; i++)
+                {
+                    gridResults.Rows[i].Cells[0].Value = !(bool)(gridResults.Rows[i].Cells[0].Value);
+                }
+            }
+        }
+
+        private void InvertCheckedTreeNodes(TreeNode treeNode)
+        {
+            foreach (TreeNode node in treeNode.Nodes)
+            {
+                node.Checked = !node.Checked;
+                if (node.Nodes.Count > 0)
+                {
+                    // If the current node has child nodes, call the CheckAllChildsNodes method recursively.
+                    this.InvertCheckedTreeNodes(node);
+                }
+            }
+        }
 
         #endregion
 

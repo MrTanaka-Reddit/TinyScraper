@@ -85,7 +85,7 @@
             this.tbUrl.Margin = new System.Windows.Forms.Padding(4);
             this.tbUrl.MinimumSize = new System.Drawing.Size(4, 46);
             this.tbUrl.Name = "tbUrl";
-            this.tbUrl.Size = new System.Drawing.Size(1407, 38);
+            this.tbUrl.Size = new System.Drawing.Size(1407, 46);
             this.tbUrl.TabIndex = 0;
             // 
             // btnScrape

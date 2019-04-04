@@ -30,7 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            this.tbUrl = new System.Windows.Forms.TextBox();
             this.btnScrape = new System.Windows.Forms.Button();
             this.gridResults = new System.Windows.Forms.DataGridView();
             this.btnExport = new System.Windows.Forms.Button();
@@ -56,6 +55,7 @@
             this.lblFileCount = new System.Windows.Forms.Label();
             this.lblStatus = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.cbSearchUrl = new System.Windows.Forms.ComboBox();
             this.tbDepth = new System.Windows.Forms.NumericUpDown();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.btnLoadScrapeFile = new System.Windows.Forms.Button();
@@ -77,16 +77,6 @@
             this.groupBox5.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // tbUrl
-            // 
-            this.tbUrl.Font = new System.Drawing.Font("Segoe UI", 9.857143F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbUrl.Location = new System.Drawing.Point(7, 64);
-            this.tbUrl.Margin = new System.Windows.Forms.Padding(4);
-            this.tbUrl.MinimumSize = new System.Drawing.Size(4, 46);
-            this.tbUrl.Name = "tbUrl";
-            this.tbUrl.Size = new System.Drawing.Size(1407, 46);
-            this.tbUrl.TabIndex = 0;
             // 
             // btnScrape
             // 
@@ -372,8 +362,8 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.cbSearchUrl);
             this.groupBox4.Controls.Add(this.tbDepth);
-            this.groupBox4.Controls.Add(this.tbUrl);
             this.groupBox4.Controls.Add(this.btnScrape);
             this.groupBox4.Controls.Add(this.label2);
             this.groupBox4.Controls.Add(this.label1);
@@ -383,6 +373,17 @@
             this.groupBox4.TabIndex = 19;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Scrape from Web";
+            // 
+            // cbSearchUrl
+            // 
+            this.cbSearchUrl.AllowDrop = true;
+            this.cbSearchUrl.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.cbSearchUrl.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.14286F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbSearchUrl.FormattingEnabled = true;
+            this.cbSearchUrl.Location = new System.Drawing.Point(12, 64);
+            this.cbSearchUrl.Name = "cbSearchUrl";
+            this.cbSearchUrl.Size = new System.Drawing.Size(1404, 38);
+            this.cbSearchUrl.TabIndex = 25;
             // 
             // tbDepth
             // 
@@ -536,8 +537,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.TextBox tbUrl;
         private System.Windows.Forms.Button btnScrape;
         private System.Windows.Forms.DataGridView gridResults;
         private System.Windows.Forms.Button btnExport;
@@ -575,6 +574,7 @@
         private System.Windows.Forms.RadioButton rbShowTree;
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.TreeView tvResults;
+        private System.Windows.Forms.ComboBox cbSearchUrl;
     }
 }
 

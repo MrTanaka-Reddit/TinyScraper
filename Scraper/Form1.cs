@@ -16,6 +16,7 @@ namespace Scraper
         private List<string> _filteredList = new List<string>();
         private string _selectedTreeViewUrls = "";
         private int _selectedNodeCount = 0;
+        private SessionInfo _sessionInfo;
 
         #endregion
 
@@ -23,10 +24,13 @@ namespace Scraper
         {
             InitializeComponent();
 
+            _sessionInfo = new SessionInfo();
+
             // Default form values
             lblFileCount.Text = Constants.FILE_COUNT_DEFAULT;
             lblSelected.Text = Constants.SELECTED_DEFAULT;
             rbShowTree.Checked = true;
+            cbSearchUrl.Items.AddRange(_sessionInfo.SearchHistory.ToArray<object>());
             
 
             // Setup the treeview control
@@ -44,13 +48,19 @@ namespace Scraper
 
         private async void BtnScrape_Click(object sender, EventArgs e)
         {
+
             _fileList.Clear();
             gridResults.Refresh();
 
-            tbUrl.Text = Processor.EnsureSlash(tbUrl.Text);
+            cbSearchUrl.Text = Processor.EnsureSlash(cbSearchUrl.Text);
+            var userUrl = cbSearchUrl.Text;
 
-            var userUrl = tbUrl.Text;
-            if (userUrl == "") return;
+            if (userUrl == String.Empty) return;
+
+            // Save Url in history file
+            _sessionInfo.CurrentSearchUrl = userUrl;
+            _sessionInfo.SaveSearchHistory();
+            
 
             lblStatus.Text = Constants.SCRAPING_STARTED;
             var scrapeStart = DateTime.Now;
@@ -447,7 +457,8 @@ namespace Scraper
             }
 
             // Save the baseUrl value in the file. This is useful when loading the file again.
-            var baseUrl = tbUrl.Text;
+
+            var baseUrl = cbSearchUrl.Text;
             var output = String.Concat(baseUrl, ',', Serializer.Serialize(foundFiles));
 
             string filename = saveFileDialogExportDetails.FileName;
@@ -484,7 +495,7 @@ namespace Scraper
             if (input != String.Empty)
             {
                 var baseUrl = input.Substring(0, input.IndexOf(','));
-                tbUrl.Text = baseUrl;
+                cbSearchUrl.Text = baseUrl;
 
                 var files = input.Substring(input.IndexOf(',') + 1, input.Length - input.IndexOf(',') - 1);
 
@@ -542,7 +553,7 @@ namespace Scraper
             _selectedNodeCount = 0;
 
             // Display the top level node. Text is URL and value is URL
-            var searchUrl = tbUrl.Text;
+            var searchUrl = cbSearchUrl.Text;
             var rootNode = tvResults.Nodes.Add(searchUrl, searchUrl);
             rootNode.ImageKey = "folderClosed";
             

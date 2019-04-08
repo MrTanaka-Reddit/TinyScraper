@@ -28,12 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.btnScrape = new System.Windows.Forms.Button();
             this.gridResults = new System.Windows.Forms.DataGridView();
             this.btnExport = new System.Windows.Forms.Button();
-            this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.rbVideoFilter = new System.Windows.Forms.RadioButton();
             this.rbAudioOnly = new System.Windows.Forms.RadioButton();
             this.rbAllFilter = new System.Windows.Forms.RadioButton();
@@ -60,14 +58,12 @@
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.btnLoadScrapeFile = new System.Windows.Forms.Button();
             this.btnSaveScrapeFile = new System.Windows.Forms.Button();
-            this.saveFileDialogExportDetails = new System.Windows.Forms.SaveFileDialog();
-            this.openFileDialogImportDetails = new System.Windows.Forms.OpenFileDialog();
-            this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.lblScrapeTime = new System.Windows.Forms.Label();
             this.rbShowGrid = new System.Windows.Forms.RadioButton();
             this.rbShowTree = new System.Windows.Forms.RadioButton();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.tvResults = new System.Windows.Forms.TreeView();
+            this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.gridResults)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -122,11 +118,6 @@
             this.btnExport.Text = "Export Selected URLs";
             this.btnExport.UseVisualStyleBackColor = true;
             this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
-            // 
-            // saveFileDialog
-            // 
-            this.saveFileDialog.DefaultExt = "txt";
-            this.saveFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialog_FileOk);
             // 
             // rbVideoFilter
             // 
@@ -424,20 +415,6 @@
             this.btnSaveScrapeFile.UseVisualStyleBackColor = true;
             this.btnSaveScrapeFile.Click += new System.EventHandler(this.btnSaveScrapeFile_Click);
             // 
-            // saveFileDialogExportDetails
-            // 
-            this.saveFileDialogExportDetails.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialogExportDetails_FileOk);
-            // 
-            // openFileDialogImportDetails
-            // 
-            this.openFileDialogImportDetails.FileName = "openFileDialog1";
-            this.openFileDialogImportDetails.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialogImportDetails_FileOk);
-            // 
-            // notifyIcon
-            // 
-            this.notifyIcon.Text = "notifyIcon1";
-            this.notifyIcon.Visible = true;
-            // 
             // lblScrapeTime
             // 
             this.lblScrapeTime.AutoSize = true;
@@ -493,6 +470,10 @@
             this.tvResults.AfterCollapse += new System.Windows.Forms.TreeViewEventHandler(this.tvResults_AfterCollapse);
             this.tvResults.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.tvResults_AfterExpand);
             // 
+            // saveFileDialog
+            // 
+            this.saveFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialog_FileOk);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
@@ -540,7 +521,6 @@
         private System.Windows.Forms.Button btnScrape;
         private System.Windows.Forms.DataGridView gridResults;
         private System.Windows.Forms.Button btnExport;
-        private System.Windows.Forms.SaveFileDialog saveFileDialog;
         private System.Windows.Forms.RadioButton rbVideoFilter;
         private System.Windows.Forms.RadioButton rbAudioOnly;
         private System.Windows.Forms.RadioButton rbAllFilter;
@@ -561,11 +541,8 @@
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.Button btnSaveScrapeFile;
-        private System.Windows.Forms.SaveFileDialog saveFileDialogExportDetails;
         private System.Windows.Forms.Button btnLoadScrapeFile;
-        private System.Windows.Forms.OpenFileDialog openFileDialogImportDetails;
         private System.Windows.Forms.NumericUpDown tbDepth;
-        private System.Windows.Forms.NotifyIcon notifyIcon;
         private System.Windows.Forms.Label lblScrapeTime;
         private System.Windows.Forms.RadioButton rbImagesOnly;
         private System.Windows.Forms.RadioButton rbDocsOnly;
@@ -575,6 +552,7 @@
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.TreeView tvResults;
         private System.Windows.Forms.ComboBox cbSearchUrl;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog;
     }
 }
 

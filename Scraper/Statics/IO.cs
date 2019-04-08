@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Scraper
 {
@@ -35,6 +36,43 @@ namespace Scraper
 
                 // return empty
                 return new List<string>();
+            }
+        }
+
+        internal static void SaveScrapeFile(string contents)
+        {
+            var folderPath = EnsureFolder(Constants.SCRAPEFILE_FOLDER);
+            var fileName = Guid.NewGuid().ToString();
+            File.WriteAllText(folderPath + "\\" + fileName, contents);
+        }
+
+        internal static List<ScrapeFileInfo> LoadScrapeFiles(string folderPath)
+        {
+            var scrapeFilesInfo = new List<ScrapeFileInfo>();
+            EnsureFolder(folderPath);
+
+            var files = Directory.GetFiles(Application.StartupPath + "\\" + folderPath);
+            foreach(var filePath in files)
+            {
+                var url = File.ReadLines(filePath).FirstOrDefault();
+                scrapeFilesInfo.Add(new ScrapeFileInfo{
+                    FilePath = filePath,
+                    Url = url
+                });    
+            }
+
+            return scrapeFilesInfo;
+        }
+
+        private static string EnsureFolder(string folderPath)
+        {
+            if (!Directory.Exists(Application.StartupPath + folderPath))
+            {
+                return Directory.CreateDirectory(folderPath).FullName;
+            }
+            else
+            {
+                return Directory.GetDirectories(Application.StartupPath + folderPath).FirstOrDefault();
             }
         }
 

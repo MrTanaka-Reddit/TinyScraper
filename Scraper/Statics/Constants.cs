@@ -47,9 +47,11 @@ namespace Scraper
         public static string SCRAPING_STARTED = "Scraping started";
         public static string PROCESSING_PREFIX = "Processing: ";
         public static string STATUS_STOPPED = "Status: Stopped";
+        public static string STATUS_SCRAPE_SAVED = "Status: Scrape file saved";
 
         // File names
         public static string HISTORY_FILEPATH = "history.txt";
+        public static string SCRAPEFILE_FOLDER = "Scrapes";
 
     }
 }

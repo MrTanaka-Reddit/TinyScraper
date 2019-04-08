@@ -153,7 +153,25 @@ namespace Scraper
         /// </summary>
         private void btnSaveScrapeFile_Click(object sender, EventArgs e)
         {
-            saveFileDialogExportDetails.ShowDialog();
+            // Todo: Review the FoundFile class. It's tied to the grid and isn't as relevant anymore
+            var foundFiles = new List<FoundFile>();
+
+            foreach (string url in _fileList)
+            {
+                foundFiles.Add(new FoundFile
+                {
+                    Select = false,
+                    Name = Processor.CleanseName(url),
+                    Url = url
+                });
+            }
+
+            // Save the baseUrl value in the file. This is useful when loading the file again.
+
+            var baseUrl = cbSearchUrl.Text;
+            var fileContents = String.Concat(baseUrl, Environment.NewLine, Serializer.Serialize(foundFiles));
+            IO.SaveScrapeFile(fileContents);
+            lblStatus.Text = Constants.STATUS_SCRAPE_SAVED;
         }
 
         /// <summary>
@@ -162,7 +180,41 @@ namespace Scraper
         /// </summary>
         private void btnLoadScrapeFile_Click(object sender, EventArgs e)
         {
-            openFileDialogImportDetails.ShowDialog();
+            string selectedUrl = default(string);
+            string selectedFilePath = default(string);
+            // Open the Open Scrape File form, so the user can select a saved scrape.
+            using (fmOpenScrapeFile fmOpenScrapeFile = new fmOpenScrapeFile())
+            {
+                fmOpenScrapeFile.ShowDialog();
+                selectedUrl = fmOpenScrapeFile.SelectedScrapeFileUrl;
+                selectedFilePath = fmOpenScrapeFile.SelectedScrapeFilePath;
+                fmOpenScrapeFile.Hide();
+            }
+
+            // If the selected file contains some text, load it and create a collection
+            // of FoundFile objects. Send this colleciton to the DisplayResults method
+            if (selectedFilePath == null) return;
+            var input = File.ReadAllText(selectedFilePath);
+            if (input != String.Empty)
+            {
+
+                var results = input.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+                var baseUrl = results[0];
+                var files = results[1];
+
+                cbSearchUrl.Text = baseUrl;
+
+                var foundFiles = new List<FoundFile>();
+                foundFiles = Serializer.Deserialize<List<FoundFile>>(files);
+
+                _fileList.Clear();
+                foreach (var file in foundFiles)
+                {
+                    _fileList.Add(file.Url);
+                }
+
+                DisplayResults(_fileList);
+            }
         }
 
         #endregion
@@ -435,37 +487,6 @@ namespace Scraper
         #endregion
 
         #region == DIALOG BOXES ==
-
-        /// <summary>
-        /// Save all the results of the scrape
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void saveFileDialogExportDetails_FileOk(object sender, CancelEventArgs e)
-        {
-            // Todo: Review the FoundFile class. It's tied to the grid and isn't as relevant anymore
-            var foundFiles = new List<FoundFile>();
-
-            foreach(string url in _fileList)
-            {
-                foundFiles.Add(new FoundFile
-                {
-                    Select = false,
-                    Name = Processor.CleanseName(url),
-                    Url = url
-                });
-            }
-
-            // Save the baseUrl value in the file. This is useful when loading the file again.
-
-            var baseUrl = cbSearchUrl.Text;
-            var output = String.Concat(baseUrl, ',', Serializer.Serialize(foundFiles));
-
-            string filename = saveFileDialogExportDetails.FileName;
-
-            File.WriteAllText(filename, output);
-        }
-
         private void saveFileDialog_FileOk(object sender, CancelEventArgs e)
         {
             var selectedUrls = "";
@@ -481,36 +502,6 @@ namespace Scraper
 
             string filename = saveFileDialog.FileName;
             File.WriteAllText(filename, selectedUrls);
-
-        }
-
-        /// <summary>
-        /// Import a saved scrape
-        /// </summary>
-        private void openFileDialogImportDetails_FileOk(object sender, CancelEventArgs e)
-        {
-
-            var input = File.ReadAllText(openFileDialogImportDetails.FileName);
-
-            if (input != String.Empty)
-            {
-                var baseUrl = input.Substring(0, input.IndexOf(','));
-                cbSearchUrl.Text = baseUrl;
-
-                var files = input.Substring(input.IndexOf(',') + 1, input.Length - input.IndexOf(',') - 1);
-
-                var foundFiles = new List<FoundFile>();
-                foundFiles = Serializer.Deserialize<List<FoundFile>>(files);
-
-                _fileList.Clear();
-                foreach (var file in foundFiles)
-                {
-                    _fileList.Add(file.Url);
-                }
-
-                DisplayResults(_fileList);
-            }
-
 
         }
 
